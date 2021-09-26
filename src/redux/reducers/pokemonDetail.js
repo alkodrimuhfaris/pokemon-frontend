@@ -3,21 +3,32 @@ const initialState = {
   pending: false,
   error: false,
 
+  successCatch: false,
+  pendingCatch: false,
+  errorCatch: false,
+
+  renamePending: false,
+
+  releasePending: false,
+  releaseSuccess: false,
+
   savedPokemon: [],
 
   image: '',
   id: 0,
-  bio: '',
   name: '',
   type: '',
   move: '',
   height: '',
   weight: '',
+  catched: false,
   stats: [],
   abilities: [],
 
   nickname: '',
   timeChange: 0,
+  isRelease: false,
+  number: 0,
 };
 
 export default (state = initialState, action) => {
@@ -33,46 +44,86 @@ export default (state = initialState, action) => {
         ...payload,
       };
     }
-    case 'CATCH_POKEMON': {
-      const {success} = action.payload;
-      if (success) {
-        const {catched} = action.payload;
-        return {
-          ...state,
-          ...action.payload,
-        };
-      }
+    case 'CATCH_POKEMON_PENDING': {
       return {
         ...state,
-        ...action.payload,
+        successCatch: false,
+        pendingCatch: true,
+        errorCatch: false,
       };
     }
-    case 'RENAME_POKEMON': {
-      const {success} = action.payload;
-      if (success) {
-        const {index, name, timeChange} = action.payload;
-        return {
-          ...state,
-          ...action.payload,
-        };
-      }
+    case 'CATCH_POKEMON_SUCCESS': {
+      const {catched} = action.payload;
       return {
         ...state,
-        ...action.payload,
+        successCatch: true,
+        pendingCatch: false,
+        errorCatch: false,
+        catched,
       };
     }
-    case 'RELEASE_POKEMON': {
-      const {success} = action.payload;
-      if (success) {
-        const {number, isPrime} = action.payload;
-        return {
-          ...state,
-          ...action.payload,
-        };
-      }
+    case 'CATCH_POKEMON_REJECTED': {
       return {
         ...state,
-        ...action.payload,
+        successCatch: false,
+        pendingCatch: false,
+        errorCatch: true,
+      };
+    }
+    case 'CHANGE_NICKNAME': {
+      return {
+        ...state,
+        successCatch: false,
+        pendingCatch: false,
+        errorCatch: false,
+        nickname: action.payload.nickname,
+      };
+    }
+    case 'RENAME_POKEMON_PENDING': {
+      return {
+        ...state,
+        renamePending: true,
+      };
+    }
+    case 'RENAME_POKEMON_SUCCESS_DETAIL': {
+      const {name: nickname, timeChange} = action.payload;
+      return {
+        ...state,
+        renamePending: false,
+        nickname,
+        timeChange,
+      };
+    }
+    case 'RELEASE_POKEMON_PENDING': {
+      return {
+        ...state,
+        releasePending: true,
+        releaseSuccess: false,
+      };
+    }
+    case 'RELEASE_POKEMON_SUCCESS': {
+      const {isPrime, number} = action.payload;
+      return {
+        ...state,
+        releasePending: false,
+        releaseSuccess: true,
+        number,
+        isRelease: isPrime,
+        nickname: isPrime ? '' : state.nickname,
+        catched: isPrime ? '' : state.catched,
+      };
+    }
+    case 'CLEAR_NOTIF': {
+      return {
+        ...state,
+        successCatch: false,
+        pendingCatch: false,
+        errorCatch: false,
+
+        renamePending: false,
+
+        releasePending: false,
+        releaseSuccess: false,
       };
     }
   }

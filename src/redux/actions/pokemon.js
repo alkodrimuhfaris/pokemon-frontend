@@ -4,7 +4,9 @@ import services, {backendService} from '../../Helpers/services';
 import promiseResponse from './promiseResponse';
 
 export default {
-  getPokemon: (offset, limit, catchedData = []) => async (dispatch) => {
+  getPokemon: (offset, limit, oldData = [], catchedData = []) => async (
+    dispatch,
+  ) => {
     dispatch({
       type: 'GET_DATA_POKEMON',
       payload: {
@@ -14,12 +16,14 @@ export default {
     const {data: axiosData} = await services().get(
       `/pokemon?${qs.stringify({offset, limit})}`,
     );
+    const newData = [];
+    oldData.forEach((x) => {
+      newData.push(x);
+    });
     try {
       const {results: rawData} = axiosData;
       const detailPokemonPromise = new Promise((resolve, reject) => {
-        const newData = [];
         try {
-          console.log(rawData);
           rawData.map(async (val) => {
             const {url, name} = val;
             const {data: pokeData} = await axios.get(url);
@@ -34,10 +38,20 @@ export default {
               weight,
             } = pokeData;
 
+            let catched = false;
+
+            catchedData.forEach((val2) => {
+              const {cathedID} = val2;
+              if (cathedID === id) {
+                catched = true;
+              }
+              return val2;
+            });
+
             newData.push({
               name,
               id,
-              weight: `${weight * 0.1} kg`,
+              weight: `${weight / 10} kg`,
 
               height: `${height * 10} cm`,
 
@@ -81,36 +95,15 @@ export default {
                   : null
                 : null,
               nickname: '',
-              catched: false,
+              catched,
             });
             return {
               id,
               name,
             };
           });
-          const realNewData = []
-          newData.map((val) => {
-            const {id} = val;
-            let catched = false;
-            catchedData.forEach((val2) => {
-              const {cathedID} = val2;
-              if (cathedID === id) {
-                catched = true;
-              }
-              return val2;
-            });
-            realNewData.push({
-              ...val,
-              catched,
-            })
-            return {
-              ...val,
-              catched,
-            };
-          });
-          console.log(realNewData);
-          resolve(realNewData);
-          return realNewData;
+          resolve(newData);
+          return newData;
         } catch (e) {
           reject(e);
           return null;
@@ -120,7 +113,7 @@ export default {
       detailPokemonPromise
         .then((data) =>
           dispatch({
-            type: 'GET_DATA_POKEMON',
+            type: 'GET_DATA_POKEMON_SUCCESS',
             payload: {
               ...promiseResponse.success,
               data,
@@ -152,7 +145,7 @@ export default {
   }),
   renamePokemon: ({name, timeChange, index}) => async (dispatch) => {
     dispatch({
-      type: 'RENAME_POKEMON',
+      type: 'RENAME_POKEMON_PENDING',
       payload: {
         ...promiseResponse.pending,
       },
@@ -164,7 +157,16 @@ export default {
       });
       const {name: newName, timeChange: nextChange} = axiosData;
       dispatch({
-        type: 'RENAME_POKEMON',
+        type: 'RENAME_POKEMON_SUCCESS',
+        payload: {
+          ...promiseResponse.success,
+          index,
+          name: newName,
+          timeChange: nextChange,
+        },
+      });
+      dispatch({
+        type: 'RENAME_POKEMON_SUCCESS_DETAIL',
         payload: {
           ...promiseResponse.success,
           index,
@@ -174,7 +176,7 @@ export default {
       });
     } catch (e) {
       dispatch({
-        type: 'RENAME_POKEMON',
+        type: 'RENAME_POKEMON_REJECTED',
         payload: {
           ...promiseResponse.rejected,
         },
@@ -183,7 +185,7 @@ export default {
   },
   catchPokemon: ({idx, val}) => async (dispatch) => {
     dispatch({
-      type: 'CATCH_POKEMON',
+      type: 'CATCH_POKEMON_PENDING',
       payload: {
         ...promiseResponse.pending,
       },
@@ -192,7 +194,7 @@ export default {
       const {data: axiosData} = await backendService().get('/catch');
       const {catched} = axiosData;
       dispatch({
-        type: 'CATCH_POKEMON',
+        type: 'CATCH_POKEMON_SUCCESS',
         payload: {
           ...promiseResponse.success,
           ...val,
@@ -215,9 +217,9 @@ export default {
       });
     }
   },
-  releaePokemon: () => async (dispatch) => {
+  releasePokemon: (idx) => async (dispatch) => {
     dispatch({
-      type: 'RELEASE_POKEMON',
+      type: 'RELEASE_POKEMON_PENDING',
       payload: {
         ...promiseResponse.pending,
       },
@@ -226,11 +228,20 @@ export default {
       const {data: axiosData} = await backendService().get('/release');
       const {number, isPrime} = axiosData;
       dispatch({
-        type: 'RELEASE_POKEMON',
+        type: 'RELEASE_POKEMON_SUCCESS',
         payload: {
           ...promiseResponse.success,
           number,
-          isPrime,
+          isPrime: !isPrime,
+        },
+      });
+      dispatch({
+        type: 'RELEASE_POKEMON_SUCCESS_MAIN',
+        payload: {
+          ...promiseResponse.success,
+          number,
+          isPrime: !isPrime,
+          idx,
         },
       });
     } catch (e) {

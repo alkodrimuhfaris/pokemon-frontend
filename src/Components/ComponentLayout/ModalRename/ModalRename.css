@@ -1,0 +1,65 @@
+.loading-modal-close {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 0vw;
+  height: 0vh;
+  transition: 0.3s;
+  z-index: 1000;
+  overflow: hidden !important;
+}
+
+.loading-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100vw;
+  height: 100vh;
+  transition: 0.3s;
+  z-index: 1000;
+}
+
+.loading-modal-main {
+  position: fixed;
+  background: transparent;
+  width: auto;
+  height: auto;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  transition: 0.3s;
+}
+
+.loading-modal-main-close {
+  position: fixed;
+  background: transparent;
+  width: 0px;
+  height: 0px;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  transition: 0.3s;
+  overflow: hidden !important;
+}
+
+.dark-mode-loading {
+  background: rgba(0, 0, 0, 0.6) !important;
+}
+
+.day-mode-loading {
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+
+.modal-rename {
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #fff;
+}

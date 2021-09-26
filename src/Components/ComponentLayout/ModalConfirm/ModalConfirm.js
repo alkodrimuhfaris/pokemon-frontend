@@ -13,26 +13,18 @@ export default function ModalConfirm({
   icon = 'info',
   title = 'Warning!',
 }) {
-  const [openThis, setThisOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    setThisOpen(modalOpen);
-  }, [modalOpen]);
-
   const doConfirm = (e) => {
     e.preventDefault();
     confirm();
-    setThisOpen(false);
   };
 
   const doCancel = (e) => {
     e.preventDefault();
     close();
-    setThisOpen(false);
   };
 
   return (
-    <Modal className="kumbh-sans" isOpen={openThis}>
+    <Modal className="kumbh-sans" isOpen={modalOpen}>
       <ModalBody>
         <div className="text-center my-3">
           <div className="py-2">

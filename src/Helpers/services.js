@@ -7,5 +7,5 @@ export default () =>
 
 export const backendService = () =>
   axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
+    baseURL: 'https://pokemon-backend-app.herokuapp.com',
   });

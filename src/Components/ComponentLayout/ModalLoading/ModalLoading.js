@@ -18,7 +18,7 @@ export default function ModalLoading({modalOpen = false}) {
           modalOpen ? 'loading-modal-main' : 'loading-modal-main-close'
         }`}
       >
-        <section {...containerProps} style={{color: 'rgba(16, 185, 129, 1)'}}>
+        <section {...containerProps} style={{color: '#034ea1'}}>
           {indicatorEl}
         </section>
       </section>
