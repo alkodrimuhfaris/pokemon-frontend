@@ -23,5 +23,14 @@ export default (state = initialState, action) => {
         ...payload,
       };
     }
+    case 'CATCH_MAIN_POKEMON': {
+      const {idx} = action.payload;
+      const {data} = state;
+      data[idx].catched = true;
+      return {
+        ...state,
+        data,
+      };
+    }
   }
 };

@@ -1,5 +1,3 @@
-import actions from '../actions';
-
 const initialState = {
   success: false,
   pending: false,
