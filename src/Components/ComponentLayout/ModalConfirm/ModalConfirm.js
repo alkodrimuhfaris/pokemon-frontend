@@ -1,6 +1,6 @@
 import React from 'react';
 import {Modal, ModalBody, Button} from 'reactstrap';
-import Icon from './Icons/index';
+import IconMemo from './Icons/index';
 
 export default function ModalConfirm({
   modalOpen = false,
@@ -28,7 +28,7 @@ export default function ModalConfirm({
       <ModalBody>
         <div className="text-center my-3">
           <div className="py-2">
-            <Icon icon={icon} />
+            <IconMemo icon={icon} />
           </div>
         </div>
         <div className="text-center my-3">

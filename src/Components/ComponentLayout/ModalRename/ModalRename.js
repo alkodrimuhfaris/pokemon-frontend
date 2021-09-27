@@ -20,7 +20,7 @@ export default function ModalRename({
         }`}
       >
         <div className="modal-rename">
-          <IconMemo icon={icon} />
+          {modalOpen ? <IconMemo icon={icon} /> : null}
           <p className="text-center font-bold mb-4">
             Awesome! you got the pokemon!
             <br />
