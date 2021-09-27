@@ -271,13 +271,13 @@ body:not(.modal-open) {
   justify-content: center;
   & .catch {
     padding: 0rem 2rem;
-    margin-right: 2rem;
     background-color: #fff;
     outline: none !important;
     border: 2px solid #034ea1;
     border-radius: 5px;
     &.danger {
       color: #ed1c24;
+      margin-left: 2rem;
       border: 2px solid #ed1c24;
     }
   }
