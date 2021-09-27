@@ -44,7 +44,9 @@ export default function MainPage() {
             )
           }
         >
-          Load More
+          {!data.length
+            ? `Didn't see pokemon lists? click here!`
+            : 'Load Some More Pokemon!'}
         </button>
       </div>
     </div>

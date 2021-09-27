@@ -232,7 +232,7 @@ export default {
         payload: {
           ...promiseResponse.success,
           number,
-          isPrime: !isPrime,
+          isPrime,
         },
       });
       dispatch({

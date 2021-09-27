@@ -5,7 +5,7 @@ import Error from './Error';
 import Warning from './Warning';
 import Info from './Info';
 
-export default function Icon({icon = 'info'}) {
+export function Icon({icon = 'info'}) {
   const Component = () => {
     switch (icon) {
       default: {
@@ -30,3 +30,5 @@ export default function Icon({icon = 'info'}) {
   };
   return <Component />;
 }
+
+export default React.memo(Icon);
